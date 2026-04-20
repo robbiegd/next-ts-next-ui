@@ -1,10 +1,10 @@
 const config = {
   metadata: {
-    title: 'Next.js 16 TypeScript & HeroUI — Template',
+    title: 'Two Rooms Setup — Character Wizard',
     description:
-      'Boilerplate template designed to quickly bootstrap a Next.js Web App, SPA, website or landing page with Next.js 16, React.js 19, TypeScript, HeroUI, TailwindCSS 4 and much more in just 30 seconds.',
+      'A mobile-friendly setup wizard for Two Rooms and a Boom. Pick your player count, experience level, and complexity to get a ready-to-play character card list.',
     keywords:
-      'next.js 16, next.js-16-template, next.js-16-boilerplate, react.js 19, react.js-19-template, react.js-19-boilerplate, typescript, heroui, hero-ui, tailwindcss 4, eslint, prettier, husky, commitlint, lint-staged'
+      'two rooms and a boom, two rooms setup, card game setup, party game, character guide, social deduction'
   },
   server: {
     host: 'localhost',
