@@ -2,14 +2,9 @@
   "private": true,
   "type": "module",
   "license": "MIT",
-  "author": {
-    "name": "Doinel Atanasiu",
-    "email": "doinel1atanasiu@gmail.com",
-    "url": "https://business-link.d1a.app"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/doinel1a/next-ts-hero-ui"
+    "url": "https://github.com/robbiegd/next-ts-next-ui"
   },
   "scripts": {
     "postinstall": "husky & playwright install",
