@@ -3,10 +3,10 @@
 [bun]: https://bun.com/docs/installation
 [yarn]: https://yarnpkg.com/getting-started/install
 [demo]: https://next-ts.d1a.app/
-[license]: https://github.com/doinel1a/next-ts-hero-ui/blob/main/LICENSE
-[code-of-conduct]: https://github.com/doinel1a/next-ts-hero-ui/blob/main/CODE_OF_CONDUCT.md
-[issues]: https://github.com/doinel1a/next-ts-hero-ui/issues
-[pulls]: https://github.com/doinel1a/next-ts-hero-ui/pulls
+[license]: https://github.com/robbiegd/next-ts-next-ui/blob/main/LICENSE
+[code-of-conduct]: https://github.com/robbiegd/next-ts-next-ui/blob/main/CODE_OF_CONDUCT.md
+[issues]: https://github.com/robbiegd/next-ts-next-ui/issues
+[pulls]: https://github.com/robbiegd/next-ts-next-ui/pulls
 [browserslist]: https://browsersl.ist/#q=last+3+versions%2C%3E+0.2%25%2C+not+dead
 [commitlint]: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
 [chrome-icon]: https://github.com/alrra/browser-logos/blob/main/src/chrome/chrome_64x64.png
@@ -53,7 +53,7 @@ This repository is ideal for front-end developers who want to build modern, fast
    - click **"Use this template"** &nbsp; or &nbsp; **"Fork"** button <br /> _alternately_
    - **clone** the repository through your terminal: <br />
      ```bash
-     git clone https://github.com/doinel1a/next-ts-hero-ui YOUR-PROJECT-NAME
+     git clone https://github.com/robbiegd/next-ts-next-ui YOUR-PROJECT-NAME
      ```
 2. Decide which package manager you want to use, then delete the unused "**.lock**" file(s)
 3. Open your terminal or code editor to the path your project is located, and run:
