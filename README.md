@@ -1,157 +1,97 @@
-[node]: https://nodejs.org/en
-[pnpm]: https://pnpm.io/installation
-[bun]: https://bun.com/docs/installation
-[yarn]: https://yarnpkg.com/getting-started/install
-[demo]: https://next-ts.d1a.app/
-[license]: https://github.com/robbiegd/next-ts-next-ui/blob/main/LICENSE
-[code-of-conduct]: https://github.com/robbiegd/next-ts-next-ui/blob/main/CODE_OF_CONDUCT.md
-[issues]: https://github.com/robbiegd/next-ts-next-ui/issues
-[pulls]: https://github.com/robbiegd/next-ts-next-ui/pulls
-[browserslist]: https://browsersl.ist/#q=last+3+versions%2C%3E+0.2%25%2C+not+dead
-[commitlint]: https://github.com/conventional-changelog/commitlint/#what-is-commitlint
-[chrome-icon]: https://github.com/alrra/browser-logos/blob/main/src/chrome/chrome_64x64.png
-[firefox-icon]: https://github.com/alrra/browser-logos/blob/main/src/firefox/firefox_64x64.png
-[edge-icon]: https://github.com/alrra/browser-logos/blob/main/src/edge/edge_64x64.png
-[opera-icon]: https://github.com/alrra/browser-logos/blob/main/src/opera/opera_64x64.png
-[safari-icon]: https://github.com/alrra/browser-logos/blob/main/src/safari/safari_64x64.png
+# 🎤 Family Feud — Summer Edition
 
-# Next.js 16 TypeScript & HeroUI — Template
+Host your own Family Feud game night, faithful to the **Big Buzzer Edition** board game:
 
-This development starter template is the ultimate solution to help you getting started on your project in no time, without the hassle of setting up and configuring your development environment from scratch each time you start working.
-This repository is ideal for front-end developers who want to build modern, fast and reliable web applications with the latest cutting edge technologies such as **Next.js 16**, **React.js 19**, **TypeScript**, **HeroUI**, **TailwindCSS 4**, **ESLint**, **Prettier**, **Husky** and much more!
+- 📺 **TV board** (`/board/CODE`) — the classic blue board with flip-to-reveal answers, giant red strike X's, team scores, pot, steal banner, and the Fast Money grid. Designed to run fullscreen on a big TV.
+- 🎛️ **Host console** (`/host/CODE`) — pick questions, reveal answers, call strikes, hand out steals, award the pot, run Fast Money, and fire any sound effect on demand.
+- 📱 **Phone buzzers** (`/buzzer/CODE`) — everyone joins the room code from their phone, picks a team, and gets a giant buzz button. First buzz wins and flashes on the TV in real time.
+- 🛠️ **Admin panel** (`/admin`) — write your own survey questions, **scan photos of real Feud cards** (Claude reads the questions, answers, and point values), and upload custom sound effects for every game event.
 
----
+## Game rules (as implemented)
 
-**[Demo][demo]** &nbsp;&nbsp;**|**&nbsp;&nbsp; **[Bug(label: bug)][issues]** &nbsp;&nbsp;**|**&nbsp;&nbsp; **[Feature(label: enhancement)][issues]**
+Straight from the Big Buzzer Edition box:
 
----
+- **3 Face Off rounds** — buzz in to face off, winner's team plays the board. Rounds 2 and 3 are **double points**.
+- **3 strikes** and the other team gets one chance to **steal** the pot.
+- **Fast Money** — 5 survey questions, 2 players, and the total is worth **triple points**.
+- Highest total wins the Feud!
 
-## :bookmark: Table of contents
+The host has full manual control, so house rules are always an option.
 
-- :computer: [Getting started](#computer-getting-started "Go to 'Getting started' section")
-- :battery: [Features](#battery-features "Go to 'Features' section")
-- :globe_with_meridians: [Browsers support](#globe_with_meridians-browsers-support "Go to 'Browsers support' section")
-- :busts_in_silhouette: [Contribute](#busts_in_silhouette-contribute "Go to 'Contribute' section")
-- :bookmark_tabs: [License](#bookmark_tabs-license "Go to 'License' section")
-- :gem: [Acknowledgements](#gem-acknowledgements "Go to 'Acknowledgements' section")
+## Quick start (local)
 
----
+```bash
+pnpm install
+pnpm db:dev          # starts Prisma's local Postgres (keep it running)
+```
 
-## :computer: Getting started
+Copy the `DATABASE_URL` (and `SHADOW_DATABASE_URL`) that `prisma dev` prints into `.env` (see `.env.example`), then in a second terminal:
 
-### Prerequisites
+```bash
+pnpm db:push         # create the tables
+pnpm db:seed         # seed the question bank (scanned cards + summer pack)
+pnpm dev             # http://localhost:3000
+```
 
-1. JavaScript runtime **[node.js][node]**
-2. **(OPTIONAL)** Alternative package manager:
-   - **[bun][bun]** <br /> or
-   - **[pnpm][pnpm]** <br /> or
-   - **[yarn][yarn]**
+Create a game on the home page, open `/board/CODE` on the TV (tap "enable sound"), keep `/host/CODE` on your laptop, and have players open `/buzzer/CODE` on their phones (they need to be on the same network, or use the deployed URL).
 
-### Start developing
+### Optional: AI card scanning
 
-1. Get the repository
-   - click **"Use this template"** &nbsp; or &nbsp; **"Fork"** button <br /> _alternately_
-   - **clone** the repository through your terminal: <br />
-     ```bash
-     git clone https://github.com/robbiegd/next-ts-next-ui YOUR-PROJECT-NAME
-     ```
-2. Decide which package manager you want to use, then delete the unused "**.lock**" file(s)
-3. Open your terminal or code editor to the path your project is located, and run:
+Add an Anthropic API key to `.env` to enable photo scanning of physical Feud cards in the admin panel:
 
-   |                                     | **npm**           | **bun**           | **pnpm**       | **yarn**       |
-   | ----------------------------------- | ----------------- | ----------------- | -------------- | -------------- |
-   | **install** dependencies            | `npm install`     | `bun install`     | `pnpm install` | `yarn install` |
-   | **run** the **development server**  | `npm run dev`     | `bun run dev`     | `pnpm dev`     | `yarn dev`     |
-   | **build** your **production app**   | `npm run build`   | `bun run build`   | `pnpm build`   | `yarn build`   |
-   | **preview** your **production app** | `npm run preview` | `bun run preview` | `pnpm preview` | `yarn preview` |
+```
+ANTHROPIC_API_KEY="sk-ant-…"
+```
 
-[Back to :arrow_up:](#nextjs-16-typescript--heroui--template "Back to 'Table of contents' section")
+Without a key, everything else works — you just enter cards manually.
 
----
+## Sounds
 
-## :battery: Features
+Placeholder sound effects are bundled in `public/sounds` (generated by `pnpm sounds:generate`). Replace any of them from **Admin → Sounds** by uploading your own audio (MP3/WAV/OGG up to 4 MB) — uploads are stored in the database so they deploy with you. Events covered: theme music, Face Off sting, buzz-in, correct answer, wrong answer (strike), steal, Fast Money, applause, and timer tick.
 
-This repository comes 🔋 packed with:
+## Deploy to Vercel
 
-- **Next.js 16**
-- **React.js 19**
-- **TypeScript**
-- **HeroUI**
-- **TailwindCSS 4**
-- **SASS** & **SCSS**
-- **ESLint 10**
-- **Prettier**
-- **Husky**
-- **Commitlint**
-- **Lint staged**
-- **Playwright**
+The app is built to run entirely on Vercel (serverless + SSE realtime with automatic reconnection — no separate websocket server needed).
 
-[Back to :arrow_up:](#nextjs-16-typescript--heroui--template "Back to 'Table of contents' section")
+1. Push this repo to GitHub and import it into Vercel.
+2. Add a Postgres database — the smoothest pairing is **Prisma Postgres** from the Vercel Marketplace (Storage → Create Database → Prisma Postgres). It sets `DATABASE_URL` automatically. Neon/Supabase also work.
+3. Add environment variables in the Vercel project settings:
+   - `DATABASE_URL` (from step 2, if not set automatically)
+   - `ANTHROPIC_API_KEY` (optional, for card scanning)
+4. Deploy. The build runs `prisma generate` automatically.
+5. One-time table setup — run locally against the production database:
 
----
+   ```bash
+   DATABASE_URL="<production url>" npx prisma db push
+   DATABASE_URL="<production url>" npx prisma db seed
+   ```
 
-## :globe_with_meridians: Browsers support
+> **Note:** there is no authentication — anyone with the URL can open the admin panel or host a game. That's by design for a family game night; keep the URL to your family or add auth before sharing widely.
 
-The configuration achieves **92.3%** coverage across all major browsers, specifically including:
+## Tech stack
 
-|            Chrome             |             Firefox              |             Edge             |        Opera         | Safari                       |
-| :---------------------------: | :------------------------------: | :--------------------------: | :------------------: | ---------------------------- |
-| ![Google Chrome][chrome-icon] | ![Mozilla Firefox][firefox-icon] | ![Microsoft Edge][edge-icon] | ![Opera][opera-icon] | ![Apple Safari][safari-icon] |
+- **Next.js 16** (App Router) + React 19 + TypeScript, Tailwind CSS 4, Framer Motion
+- **Prisma 7** ORM with PostgreSQL (`prisma dev` local database → Prisma Postgres/Neon in production)
+- **Realtime:** Server-Sent Events backed by a game event log in Postgres — works within Vercel's serverless limits (streams auto-reconnect)
+- **Card scanning:** Anthropic API (Claude vision with structured outputs)
 
-**\*** In order to support a wider percentage of browsers, update the `.browserslistrc` configuration file:
+## Scripts
 
-- `last 3 versions`: browser versions
-- `> 0.2%`: browser usage statistics
-- `not dead`: whether the browser is officially supported
+| Script                 | What it does                                |
+| ---------------------- | ------------------------------------------- |
+| `pnpm dev`             | Next.js dev server                          |
+| `pnpm build`           | `prisma generate` + production build        |
+| `pnpm db:dev`          | Local Prisma Postgres server                |
+| `pnpm db:push`         | Sync the Prisma schema to the database      |
+| `pnpm db:seed`         | Seed the question bank                      |
+| `pnpm db:studio`       | Browse the database                         |
+| `pnpm sounds:generate` | Regenerate the placeholder sound effects    |
+| `pnpm lint` / `pnpm typecheck` / `pnpm test` | Quality checks        |
 
-Update the configuration [here][browserslist] and check in real-time the **global browsers support**.
+## Also in this repo
 
-**\* The more versions you need to support, the larger the JS and CSS bundle sizes will be.**
+The original template's **Two Rooms and a Boom setup wizard** lives on at [`/two-rooms`](/two-rooms).
 
-[Back to :arrow_up:](#nextjs-16-typescript--heroui--template "Back to 'Table of contents' section")
+## Disclaimer
 
----
-
-## :busts_in_silhouette: Contribute
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create.  
-Any contribution is greatly appreciated: big or small, it can be documentation updates, adding new features or something bigger.  
-Please check the [**contributing guide**][code-of-conduct] for details on how to help out and keep in mind that all commits must follow the **[conventional commit format][commitlint]**.
-
-### How to contribute
-
-1.  **[Get started](#computer-getting-started "Go to 'Getting started' section")**
-2.  **For a new feature**
-    1.  Create a new branch: `git checkout -b feat/NEW-FEATURE`
-    2.  Add your changes to the staging area: `git add PATH/TO/FILENAME.EXTENSION`
-    3.  Commit your changes: `git commit -m "feat: NEW FEATURE"`
-    4.  Push your new branch: `git push origin feat/NEW-FEATURE`
-3.  **For a bug fix**
-    1.  Create a new branch: `git checkout -b fix/BUG-FIX`
-    2.  Add your changes to the staging area: `git add PATH/TO/FILENAME.EXTENSION`
-    3.  Commit your changes: `git commit -m "fix: BUG FIX"`
-    4.  Push your new branch: `git push origin fix/BUG-FIX`
-4.  **Open a new [pull request][pulls]**
-
-[Back to :arrow_up:](#nextjs-16-typescript--heroui--template "Back to 'Table of contents' section")
-
----
-
-## :bookmark_tabs: License
-
-All logos and trademarks are the property of their respective owners.  
-Everything else is distributed under the **MIT License**.  
-See the [LICENSE][license] file for more informations.
-
-[Back to :arrow_up:](#nextjs-16-typescript--heroui--template "Back to 'Table of contents' section")
-
----
-
-## :gem: Acknowledgements
-
-Special thanks to:
-
-- [alrra](https://github.com/alrra) for [browser-logos](https://github.com/alrra/browser-logos)
-- [tandpfun](https://github.com/tandpfun) for [skill-icons](https://github.com/tandpfun/skill-icons)
-
-[Back to :arrow_up:](#nextjs-16-typescript--heroui--template "Back to 'Table of contents' section")
+This is a fan-made, non-commercial project for private family game nights. Family Feud is a trademark of Fremantle Media — this project is not affiliated with or endorsed by Fremantle or Spin Master, and ships with placeholder sounds and original questions only (plus whatever you scan from the game you own).
