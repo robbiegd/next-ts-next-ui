@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -15,6 +16,11 @@ interface QuestionInput {
 }
 
 export async function PATCH(request: Request, context: RouteContext) {
+  const unauthorized = await requireAuth();
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   const { id } = await context.params;
   const body = (await request.json().catch(() => null)) as QuestionInput | null;
   if (!body) {
@@ -62,6 +68,11 @@ export async function PATCH(request: Request, context: RouteContext) {
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
+  const unauthorized = await requireAuth();
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   const { id } = await context.params;
   await prisma.question.delete({ where: { id } }).catch(() => null);
   return NextResponse.json({ ok: true });
