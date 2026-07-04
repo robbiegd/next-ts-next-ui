@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
@@ -20,6 +21,11 @@ interface QuestionInput {
 }
 
 export async function POST(request: Request) {
+  const unauthorized = await requireAuth();
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   const body = (await request.json().catch(() => null)) as QuestionInput | null;
   const text = body?.text?.trim();
   const answers = (body?.answers ?? [])

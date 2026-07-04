@@ -3,6 +3,8 @@ import { zodOutputFormat } from '@anthropic-ai/sdk/helpers/zod';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
+import { requireAuth } from '@/lib/auth';
+
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
@@ -23,6 +25,11 @@ const ScannedCardSchema = z.object({
 const SUPPORTED_MEDIA_TYPES = new Set(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
 
 export async function POST(request: Request) {
+  const unauthorized = await requireAuth();
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   if (!process.env['ANTHROPIC_API_KEY']) {
     return NextResponse.json(
       {

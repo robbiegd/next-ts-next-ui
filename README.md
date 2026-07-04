@@ -35,6 +35,17 @@ pnpm dev             # http://localhost:3000
 
 Create a game on the home page, open `/board/CODE` on the TV (tap "enable sound"), keep `/host/CODE` on your laptop, and have players open `/buzzer/CODE` on their phones (they need to be on the same network, or use the deployed URL).
 
+### Admin login
+
+The admin panel (`/admin`) and its APIs (question editing, card scanning, sound uploads) are protected by a simple username/password login at `/login`. Configure the credentials in `.env`:
+
+```
+AUTH_USERNAME="admin"     # default
+AUTH_PASSWORD="hunter2"   # default — change this before deploying!
+```
+
+Changing either value signs out every existing session. Game surfaces (board, buzzers, host console) stay open so family can join without accounts.
+
 ### Optional: AI card scanning
 
 Add an Anthropic API key to `.env` to enable photo scanning of physical Feud cards in the admin panel:
@@ -57,6 +68,7 @@ The app is built to run entirely on Vercel (serverless + SSE realtime with autom
 2. Add a Postgres database — the smoothest pairing is **Prisma Postgres** from the Vercel Marketplace (Storage → Create Database → Prisma Postgres). It sets `DATABASE_URL` automatically. Neon/Supabase also work.
 3. Add environment variables in the Vercel project settings:
    - `DATABASE_URL` (from step 2, if not set automatically)
+   - `AUTH_USERNAME` / `AUTH_PASSWORD` (admin login — don't ship the defaults)
    - `ANTHROPIC_API_KEY` (optional, for card scanning)
 4. Deploy. The build runs `prisma generate` automatically.
 5. One-time table setup — run locally against the production database:
@@ -66,7 +78,7 @@ The app is built to run entirely on Vercel (serverless + SSE realtime with autom
    DATABASE_URL="<production url>" npx prisma db seed
    ```
 
-> **Note:** there is no authentication — anyone with the URL can open the admin panel or host a game. That's by design for a family game night; keep the URL to your family or add auth before sharing widely.
+> **Note:** the admin panel is behind the login above, but game surfaces (board, buzzer, host console) are open to anyone with the URL and room code — by design, so family can join instantly.
 
 ## Tech stack
 

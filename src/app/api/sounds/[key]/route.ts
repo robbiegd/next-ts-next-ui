@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 
+import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/db';
 import { SOUND_KEYS } from '@/lib/feud/sounds';
 
@@ -26,6 +27,11 @@ export async function GET(_request: Request, context: RouteContext) {
 }
 
 export async function POST(request: Request, context: RouteContext) {
+  const unauthorized = await requireAuth();
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   const { key } = await context.params;
   if (!SOUND_KEYS.has(key)) {
     return NextResponse.json({ error: 'Unknown sound key' }, { status: 404 });
@@ -54,6 +60,11 @@ export async function POST(request: Request, context: RouteContext) {
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
+  const unauthorized = await requireAuth();
+  if (unauthorized) {
+    return unauthorized;
+  }
+
   const { key } = await context.params;
   await prisma.soundEffect.delete({ where: { key } }).catch(() => null);
   return NextResponse.json({ ok: true });
