@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Question {
+  id        String   @id @default(cuid())
+  text      String
+  category  String   @default("general")
+  source    String   @default("custom") // custom | card-scan | seed
+  answers   Answer[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  text       String
+  points     Int
+  rank       Int
+
+  @@index([questionId])
+}
+
+model SoundEffect {
+  id        String   @id @default(cuid())
+  key       String   @unique // theme | buzz-in | correct | wrong | reveal | fast-money | applause | steal | tick
+  name      String
+  mimeType  String
+  data      Bytes
+  updatedAt DateTime @updatedAt
+}
+
+model Game {
+  id        String      @id @default(cuid())
+  code      String      @unique
+  name      String      @default("Family Feud")
+  teamAName String      @default("Team A")
+  teamBName String      @default("Team B")
+  status    String      @default("lobby") // lobby | faceoff | fast-money | finished
+  state     Json
+  events    GameEvent[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model GameEvent {
+  id        String   @id @default(cuid())
+  gameId    String
+  game      Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  seq       Int
+  type      String
+  payload   Json
+  createdAt DateTime @default(now())
+
+  @@unique([gameId, seq])
+  @@index([gameId, seq])
+}
